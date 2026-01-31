@@ -12,32 +12,40 @@ from src import calculator
 class TestCalculator(unittest.TestCase):
 
     def test_fun1(self):
-        # average
-        self.assertEqual(calculator.fun1(2, 3), 2.5)
-        self.assertEqual(calculator.fun1(5, 0), 2.5)
+        self.assertEqual(calculator.fun1(2, 3), 5)
+        self.assertEqual(calculator.fun1(5, 0), 5)
+
         self.assertEqual(calculator.fun1(-1, 1), 0)
-        self.assertEqual(calculator.fun1(-1, -1), -1)
+        self.assertEqual(calculator.fun1(-1, -1), -2)
 
     def test_fun2(self):
-        # absolute difference
-        self.assertEqual(calculator.fun2(2, 3), 1)
+        self.assertEqual(calculator.fun2(2, 3), -1)
         self.assertEqual(calculator.fun2(5, 0), 5)
-        self.assertEqual(calculator.fun2(-1, 1), 2)
+        self.assertEqual(calculator.fun2(-1, 1), -2)
         self.assertEqual(calculator.fun2(-1, -1), 0)
 
     def test_fun3(self):
-        # power
-        self.assertEqual(calculator.fun3(2, 3), 8)
-        self.assertEqual(calculator.fun3(5, 0), 1)
+        self.assertEqual(calculator.fun3(2, 3), 6)
+        self.assertEqual(calculator.fun3(5, 0), 0)
         self.assertEqual(calculator.fun3(-1, 1), -1)
-        self.assertEqual(calculator.fun3(-1, 2), 1)
+        self.assertEqual(calculator.fun3(-1, -1), 1)
 
     def test_fun4(self):
-        # max of three
-        self.assertEqual(calculator.fun4(2, 3, 5), 5)
-        self.assertEqual(calculator.fun4(5, 0, -1), 5)
-        self.assertEqual(calculator.fun4(-1, -1, -1), -1)
-        self.assertEqual(calculator.fun4(-1, -1, 100), 100)
+        self.assertEqual(calculator.fun4(2, 3, 5), 10)
+        self.assertEqual(calculator.fun4(5, 0, -1), 4)
+        self.assertEqual(calculator.fun4(-1, -1, -1), -3)
+        self.assertEqual(calculator.fun4(-1, -1, 100), 98)
+
+    def test_fun5(self):
+        self.assertEqual(calculator.fun5(10, 2), 5)
+        self.assertEqual(calculator.fun5(5, 2), 2.5)
+        self.assertEqual(calculator.fun5(-9, 3), -3)
+
+        with self.assertRaises(ZeroDivisionError):
+            calculator.fun5(10, 0)
+
+        with self.assertRaises(ValueError):
+            calculator.fun5("10", 2)
 
 
 if __name__ == '__main__':
