@@ -5,7 +5,7 @@
 
 ### ML Model
 
-This script is designed for data clustering using K-Means clustering and determining the optimal number of clusters using the elbow method. It provides functionality to load data from a CSV file, perform data preprocessing, build and save a K-Means clustering model, and determine the number of clusters based on the elbow method.
+This script is designed for data clustering using the DBSCAN (Density-Based Spatial Clustering of Applications with Noise) algorithm. It provides functionality to load data from a CSV file, perform data preprocessing, build and save a DBSCAN clustering model, and report clustering results including the number of clusters and noise points detected.
 
 #### Prerequisites
 
@@ -13,12 +13,11 @@ Before using this script, make sure you have the following libraries installed:
 
 - pandas
 - scikit-learn (sklearn)
-- kneed
 - pickle
 
 #### Usage
 
-You can use this script to perform K-Means clustering on your dataset as follows:
+You can use this script to perform DBSCAN clustering on your dataset as follows:
 
 ```python
 # Load the data
@@ -45,24 +44,24 @@ print(result)
      ```
 
 2. **data_preprocessing(data)**
-   - *Description:* Deserializes data, performs data preprocessing, and returns serialized clustered data.
+   - *Description:* Deserializes data, performs data preprocessing including normalization using MinMaxScaler, and returns serialized processed data.
    - *Usage:*
      ```python
      preprocessed_data = data_preprocessing(data)
      ```
 
 3. **build_save_model(data, filename)**
-   - *Description:* Builds a K-Means clustering model, saves it to a file, and returns SSE values.
+   - *Description:* Builds a DBSCAN clustering model, saves it to a file, and returns clustering information including number of clusters and noise points.
    - *Usage:*
      ```python
-     sse_values = build_save_model(preprocessed_data, 'clustering_model.pkl')
+     model_info = build_save_model(preprocessed_data, 'clustering_model.pkl')
      ```
 
 4. **load_model_elbow(filename, sse)**
-   - *Description:* Loads a saved K-Means clustering model and determines the number of clusters using the elbow method.
+   - *Description:* Loads a saved DBSCAN clustering model and reports clustering results such as cluster count and noise points. Returns the cluster label of the first sample.
    - *Usage:*
      ```python
-     result = load_model_elbow('clustering_model.pkl', sse_values)
+     result = load_model_elbow('clustering_model.pkl', model_info)
      ```
 ### Airflow Setup
 
@@ -300,6 +299,7 @@ your_airflow_project/
 │   ├── lab.py                # Data processing and modeling functions
 ├── data/                       # Directory for data (if needed)
 ├── docker-compose.yaml         # Docker Compose configuration
+├── Dockerfile                  # Dockerfile
 ```
 
 #### Step 2: Docker Compose Configuration
@@ -318,11 +318,11 @@ app-airflow-webserver-1 | 127.0.0.1 - - [17/Feb/2023:09:34:29 +0000] "GET /healt
 ```
 
 #### Step 4: Access Airflow Web Interface
-- Open a web browser and navigate to http://localhost:8080.
+- Navigate to http://localhost:8080 and log in.
 
 - Log in with the credentials set in the .env file or use the default credentials (username: admin, password: admin).
 
-- Once logged in, you'll be on the Airflow web interface.
+- Once logged in, you'll be on the Airflow web interface
 
 #### Step 5: Trigger the DAG
 - In the Airflow web interface, navigate to the "DAGs" page.
@@ -335,4 +335,12 @@ app-airflow-webserver-1 | 127.0.0.1 - - [17/Feb/2023:09:34:29 +0000] "GET /healt
 
 #### Step 6: Pipeline Outputs
 
-- Once the DAG completes its execution, check any output or artifacts produced by your functions and tasks. 
+- Once the DAG completes its execution, check any output or artifacts produced by your functions and tasks.
+
+* Number of clusters detected
+
+* Number of noise points
+
+* First sample cluster label
+
+* Saved DBSCAN model artifact
