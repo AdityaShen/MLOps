@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy the model training script into the container
 COPY src/ .
 
-# Install Scikit-Learn and joblib
+# Install dependencies
 RUN pip install -r requirements.txt
 
 # Run the script when the container launches
