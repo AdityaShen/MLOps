@@ -1,7 +1,7 @@
 # Handwritten Digit Classification with KNN (Dockerized)
 
 ## Overview
-This project trains a **K-Nearest Neighbors (KNN)** classifier on the **Digits** dataset from scikit-learn. The dataset contains 1,797 samples of 8x8 pixel handwritten digit images (0–9), represented as 64 numerical features. The entire training and evaluation pipeline runs inside a Docker container.
+this project trains a **KNN** classifier on the **Digits** dataset from scikit-learn. The dataset contains 1,797 samples of 8x8 pixel handwritten digit images (0–9), represented as 64 numerical features. The entire training and evaluation pipeline runs inside a Docker container
 
 ### What Changed from the Original
 
@@ -9,14 +9,13 @@ This project trains a **K-Nearest Neighbors (KNN)** classifier on the **Digits**
 |---|---|---|
 | **Dataset** | Iris (150 samples, 4 features, 3 classes) | Digits (1,797 samples, 64 features, 10 classes) |
 | **Model** | Random Forest | KNN (k=5, distance-weighted) |
-| **Preprocessing** | None | StandardScaler (required for distance-based models) |
+| **Preprocessing** | None | StandardScaler  |
 | **Evaluation** | None | Accuracy, F1, classification report, confusion matrix |
-| **Logging** | Single print | Structured logging with timestamps |
 | **Error Handling** | None | Try-catch with proper exit codes |
 | **Output Files** | `iris_model.pkl` | `digits_knn.pkl`, `digits_scaler.pkl`, `model_metrics.json`, `sample_predictions.json` |
 
 ### Why KNN Needs Scaling
-KNN classifies points based on the distance to their neighbors. If features have different scales, the larger-scale feature dominates the distance calculation. `StandardScaler` normalizes all features to zero mean and unit variance so each feature contributes equally.
+KNN classifies points based on the distance to their neighbors. If features have different scales, the larger-scale feature dominates the distance calculation. `StandardScaler` normalizes all features to zero mean and unit variance so each feature contributes equally
 
 ---
 
@@ -76,6 +75,16 @@ docker load < my_image.tar
 
 ---
 
+
+
+---
+
+## Results
+
+<img width="774" height="677" alt="image" src="https://github.com/user-attachments/assets/cdd88c70-bb47-4406-96c0-bb7825139505" />
+
+---
+
 ## Useful Docker Commands
 
 | Command | Description |
@@ -86,17 +95,3 @@ docker load < my_image.tar
 | `docker rmi lab1:v1` | Remove the image |
 | `docker system prune` | Clean up unused containers/images |
 
----
-
-## Results
-
-<img width="774" height="677" alt="image" src="https://github.com/user-attachments/assets/cdd88c70-bb47-4406-96c0-bb7825139505" />
-
-
-## Troubleshooting
-
-**"Cannot connect to Docker daemon"** — Start Docker Desktop, or on Linux: `sudo systemctl start docker`
-
-**"Permission denied"** — Add your user to the docker group: `sudo usermod -aG docker $USER`, then log out and back in.
-
-**Build fails with pip errors** — Ensure the Dockerfile uses `FROM python:3.10` and that `requirements.txt` is inside `src/`.
