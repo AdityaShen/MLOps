@@ -88,6 +88,11 @@ docker load < my_image.tar
 
 ---
 
+## Results
+
+<img width="774" height="677" alt="image" src="https://github.com/user-attachments/assets/cdd88c70-bb47-4406-96c0-bb7825139505" />
+
+
 ## Troubleshooting
 
 **"Cannot connect to Docker daemon"** — Start Docker Desktop, or on Linux: `sudo systemctl start docker`
