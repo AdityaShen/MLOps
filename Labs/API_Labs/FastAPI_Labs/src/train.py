@@ -1,19 +1,36 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score
 import joblib
-from data import load_data, split_data
+import os
 
-def fit_model(X_train, y_train):
-    """
-    Train a Decision Tree Classifier and save the model to a file.
-    Args:
-        X_train (numpy.ndarray): Training features.
-        y_train (numpy.ndarray): Training target values.
-    """
-    dt_classifier = DecisionTreeClassifier(max_depth=3, random_state=12)
-    dt_classifier.fit(X_train, y_train)
-    joblib.dump(dt_classifier, "../model/iris_model.pkl")
+# Load dataset
+digits = load_digits()
+X, y = digits.data, digits.target
 
-if __name__ == "__main__":
-    X, y = load_data()
-    X_train, X_test, y_train, y_test = split_data(X, y)
-    fit_model(X_train, y_train)
+# Train test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Scale features (critical for KNN)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train model
+model = KNeighborsClassifier(n_neighbors=5, weights='distance', metric='minkowski')
+model.fit(X_train, y_train)
+
+# Evaluate
+pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, pred)
+print(f"Model Accuracy: {accuracy:.4f}")
+
+# Save model and scaler
+os.makedirs("../model", exist_ok=True)
+joblib.dump(model, "../model/digits_knn.pkl")
+joblib.dump(scaler, "../model/digits_scaler.pkl")
+print("Model and scaler saved successfully.")
