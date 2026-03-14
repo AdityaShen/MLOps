@@ -1,27 +1,25 @@
-import numpy as np
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
+from pydantic import BaseModel
+from typing import List
 
-def load_data():
-    """
-    Load the Iris dataset and return the features and target values.
-    Returns:
-        X (numpy.ndarray): The features of the Iris dataset.
-        y (numpy.ndarray): The target values of the Iris dataset.
-    """
-    iris = load_iris()
-    X = iris.data
-    y = iris.target
-    return X, y
 
-def split_data(X, y):
+class DigitData(BaseModel):
     """
-    Split the data into training and testing sets.
-    Args:
-        X (numpy.ndarray): The features of the dataset.
-        y (numpy.ndarray): The target values of the dataset.
-    Returns:
-        X_train, X_test, y_train, y_test (tuple): The split dataset.
+    Represents a single 8x8 handwritten digit image as 64 pixel intensity features.
+    Each pixel value ranges from 0.0 to 16.0.
     """
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=12)
-    return X_train, X_test, y_train, y_test
+    pixels: List[float]  # expects a list of 64 float values
+
+
+class DigitBatch(BaseModel):
+    """
+    Represents a batch of digit samples for batch prediction.
+    """
+    samples: List[DigitData]
+
+
+class DigitResponse(BaseModel):
+    prediction: int
+
+
+class BatchResponse(BaseModel):
+    predictions: List[int]
